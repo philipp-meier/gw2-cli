@@ -1,7 +1,7 @@
 # gw2-cli
 Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by using the official API.
 
-![Preview](https://repository-images.githubusercontent.com/543321310/8e131ddc-7e53-4541-98f6-8ce7bebb10a0)
+![Preview](https://repository-images.githubusercontent.com/543321310/0150e47a-df28-4553-af4e-0c889af38a9b)
 
 **Note:** This is a learning project I set up to familiarize myself with Rust, since I did not have any prior experience with this tech stack. Feel free to contribute to this project.
 
