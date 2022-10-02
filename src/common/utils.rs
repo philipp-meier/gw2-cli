@@ -1,9 +1,10 @@
 use crate::v2::pvp::PvpStats;
 use chrono::prelude::*;
 use colored::Colorize;
+use crate::v2::characters::CharacterCore;
 
-/// Returns the formatted account age (years, days, hours, minutes, seconds).
-pub fn get_account_age(timestamp: DateTime<Utc>) -> String {
+/// Returns the formatted age (years, days, hours, minutes, seconds).
+pub fn get_age_from_create_date(timestamp: DateTime<Utc>) -> String {
     let mut seconds = (Utc::now()-timestamp).num_seconds() as usize;
 
     let years = seconds / 31_536_000;
@@ -46,6 +47,11 @@ pub fn format_pvp_stats_row(stats: PvpStats, rank: String) -> String {
     }
     format!("{}{} - {} (Wins: {}, Losses: {})", stats.pvp_rank.to_string().blue(), rollovers, rank,
             stats.aggregate.wins.to_string().green(), stats.aggregate.losses.to_string().red())
+}
+
+pub fn format_char_row(character: CharacterCore) -> String {
+    format!("{} ({}, {} {})", character.name, character.level, character.race,
+            character.profession)
 }
 
 /// Returns the ASCII Guild Wars 2 logo.

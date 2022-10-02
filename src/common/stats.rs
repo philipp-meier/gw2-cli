@@ -6,6 +6,7 @@ use crate::v2::account::Wallet;
 use crate::v2::pvp::{PvpStats, PvpRank};
 use crate::v2::wvw::WvwRank;
 use colored::Colorize;
+use crate::v2::characters::CharacterCore;
 
 pub struct StatsRow {
     title: String,
@@ -25,7 +26,10 @@ pub async fn print(client: &Gw2Client) {
         Ok(account) => {
             rows.push(StatsRow::new("Title", account.name));
             rows.push(StatsRow::new("Separator", String::from("-----------------------")));
-            rows.push(StatsRow::new("Age", get_account_age(account.created)));
+            rows.push(StatsRow::new("Account Age", get_age_from_create_date(account.created)));
+
+            // Account create date
+            rows.push(StatsRow::new("Created", account.created.to_string()));
 
             // (Home-)World of the player
             let world_row = match World::get(&client, account.world).await {
@@ -65,8 +69,11 @@ pub async fn print(client: &Gw2Client) {
                 Err(err) => rows.push(StatsRow::new("WvW", err.error))
             }
 
-            // Account create date
-            rows.push(StatsRow::new("Created", account.created.to_string()));
+            // Oldest character stats
+            match CharacterCore::get_oldest_character(&client).await {
+                Ok(oldest_char) => rows.push(StatsRow::new("Oldest char", format_char_row(oldest_char))),
+                Err(err) => rows.push(StatsRow::new("Oldest char", err.error))
+            }
         },
         Err(err) => println!("{}", err.error)
     };
@@ -86,9 +93,9 @@ fn print_stats(stats_rows: Vec<StatsRow>) {
 
             if stats_row_index < 2 {
                 let text = if stats_row_index == 0 { stats_row.text.bold() } else { stats_row.text.white() };
-                println!("{}{:10}", formatted_ascii_line, text);
+                println!("{}{:14}", formatted_ascii_line, text);
             } else {
-                println!("{}{:10}{}", formatted_ascii_line, format!("{}:", stats_row.title).bold(), stats_row.text);
+                println!("{}{:14}{}", formatted_ascii_line, format!("{}:", stats_row.title).bold(), stats_row.text);
             }
         } else {
             println!("{formatted_ascii_line}");

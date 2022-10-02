@@ -22,7 +22,7 @@ pub struct Account {
 
 impl Account {
     pub async fn get(client: &Gw2Client) -> Result<Account, Gw2ApiError> {
-        client.request("/v2/account").await
+        client.request("v2/account").await
     }
 }
 

@@ -14,6 +14,7 @@ mod v2 {
     pub mod worlds;
     pub mod pvp;
     pub mod wvw;
+    pub mod characters;
 }
 
 #[derive(Parser, Debug)]
