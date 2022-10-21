@@ -7,7 +7,11 @@ Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by usi
 
 ## Usage
 ```bash
-Usage: gw2-cli [OPTIONS]
+Usage: gw2-cli [OPTIONS] [COMMAND]
+
+Commands:
+  characters  Character information
+  help        Print this message or the help of the given subcommand(s)
 
 Options:
   -l, --lang <LANG>  [default: en]
