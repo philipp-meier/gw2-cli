@@ -16,7 +16,7 @@ pub struct CharacterCore {
     pub created: DateTime<Utc>,         // ISO 8601 representation of the character's creation time
 }
 
-async fn get_characters(client: &Gw2Client) -> Result<Vec<String>, Gw2ApiError> {
+pub async fn get_characters(client: &Gw2Client) -> Result<Vec<String>, Gw2ApiError> {
     client.request::<Vec<String>>("v2/characters").await
 }
 

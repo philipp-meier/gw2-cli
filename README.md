@@ -7,12 +7,16 @@ Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by usi
 
 ## Usage
 ```bash
-Usage: gw2-cli [OPTIONS] --api-key <API_KEY>
+Usage: gw2-cli [OPTIONS]
 
 Options:
-  -a, --api-key <API_KEY>  
-  -l, --lang <LANG>        [default: en]
-  -h, --help               Print help information
+  -l, --lang <LANG>  [default: en]
+  -h, --help         Print help information
+```
+
+### List characters
+```bash
+gw2-cli characters list
 ```
 
 Currently, the API key will not be stored automatically. I therefore created a `.api_key`-file in the `gw2-cli` folder.
