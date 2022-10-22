@@ -1,21 +1,24 @@
 use crate::client::Gw2Client;
 use crate::common::utils::*;
+use crate::v2::account::Wallet;
+use crate::v2::characters::CharacterCore;
+use crate::v2::pvp::{PvpRank, PvpStats};
+use crate::v2::wvw::WvwRank;
 use crate::Account;
 use crate::World;
-use crate::v2::account::Wallet;
-use crate::v2::pvp::{PvpStats, PvpRank};
-use crate::v2::wvw::WvwRank;
 use colored::Colorize;
-use crate::v2::characters::CharacterCore;
 
 pub struct StatsRow {
     title: String,
-    text: String
+    text: String,
 }
 
 impl StatsRow {
     pub fn new(title: &str, text: String) -> StatsRow {
-        Self { title: String::from(title), text }
+        Self {
+            title: String::from(title),
+            text,
+        }
     }
 }
 
@@ -25,16 +28,24 @@ pub async fn print(client: &Gw2Client) {
     match Account::get(&client).await {
         Ok(account) => {
             rows.push(StatsRow::new("Title", account.name));
-            rows.push(StatsRow::new("Separator", String::from("-----------------------")));
-            rows.push(StatsRow::new("Account Age", get_age_from_create_date(account.created)));
+            rows.push(StatsRow::new(
+                "Separator",
+                String::from("-----------------------"),
+            ));
+            rows.push(StatsRow::new(
+                "Account Age",
+                get_age_from_create_date(account.created),
+            ));
 
             // Account create date
             rows.push(StatsRow::new("Created", account.created.to_string()));
 
             // (Home-)World of the player
             let world_row = match World::get(&client, account.world).await {
-                Ok(world) => StatsRow::new("World", format!("{} ({})", world.name, world.population)),
-                Err(_) => StatsRow::new("World", account.world.to_string())
+                Ok(world) => {
+                    StatsRow::new("World", format!("{} ({})", world.name, world.population))
+                }
+                Err(_) => StatsRow::new("World", account.world.to_string()),
             };
             rows.push(world_row);
 
@@ -47,8 +58,8 @@ pub async fn print(client: &Gw2Client) {
                             break;
                         }
                     }
-                },
-                Err(_) => rows.push(StatsRow::new("Coins", String::from("not found")))
+                }
+                Err(_) => rows.push(StatsRow::new("Coins", String::from("not found"))),
             }
 
             // PvP stats
@@ -56,32 +67,37 @@ pub async fn print(client: &Gw2Client) {
                 Ok(stats) => {
                     let rank = match PvpRank::get(&client, stats.pvp_rank).await {
                         Ok(rank) => rank.name,
-                        Err(err) => String::from(err.error)
+                        Err(err) => String::from(err.error),
                     };
                     rows.push(StatsRow::new("PvP", format_pvp_stats_row(stats, rank)));
-                },
-                Err(_) => rows.push(StatsRow::new("PvP", String::from("not found")))
+                }
+                Err(_) => rows.push(StatsRow::new("PvP", String::from("not found"))),
             }
 
             // WvW stats
             match WvwRank::get(&client, account.wvw_rank).await {
-                Ok(rank) => rows.push(StatsRow::new("WvW", format_wvw_stats_row(account.wvw_rank, rank.title))),
-                Err(err) => rows.push(StatsRow::new("WvW", err.error))
+                Ok(rank) => rows.push(StatsRow::new(
+                    "WvW",
+                    format_wvw_stats_row(account.wvw_rank, rank.title),
+                )),
+                Err(err) => rows.push(StatsRow::new("WvW", err.error)),
             }
 
             // Oldest character stats
             match CharacterCore::get_oldest_character(&client).await {
-                Ok(oldest_char) => rows.push(StatsRow::new("Oldest char", format_char_row(oldest_char))),
-                Err(err) => rows.push(StatsRow::new("Oldest char", err.error))
+                Ok(oldest_char) => {
+                    rows.push(StatsRow::new("Oldest char", format_char_row(oldest_char)))
+                }
+                Err(err) => rows.push(StatsRow::new("Oldest char", err.error)),
             }
-        },
-        Err(err) => println!("{}", err.error)
+        }
+        Err(err) => println!("{}", err.error),
     };
 
     print_stats(rows);
 }
 
-fn print_stats(stats_rows: Vec<StatsRow>) {
+pub fn print_stats(stats_rows: Vec<StatsRow>) {
     let ascii_logo_rows = get_ascii_logo_rows();
     let stats_rows_length = stats_rows.len();
     for (i, ascii_line) in ascii_logo_rows.iter().enumerate() {
@@ -92,13 +108,23 @@ fn print_stats(stats_rows: Vec<StatsRow>) {
             let stats_row = &stats_rows[stats_row_index];
 
             if stats_row_index < 2 {
-                let text = if stats_row_index == 0 { stats_row.text.bold() } else { stats_row.text.white() };
+                let text = if stats_row_index == 0 {
+                    stats_row.text.bold()
+                } else {
+                    stats_row.text.white()
+                };
                 println!("{}{:14}", formatted_ascii_line, text);
             } else {
-                println!("{}{:14}{}", formatted_ascii_line, format!("{}:", stats_row.title).bold(), stats_row.text);
+                println!(
+                    "{}{:14}{}",
+                    formatted_ascii_line,
+                    format!("{}:", stats_row.title).bold(),
+                    stats_row.text
+                );
             }
         } else {
             println!("{formatted_ascii_line}");
         }
     }
 }
+

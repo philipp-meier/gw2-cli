@@ -23,8 +23,10 @@ Options:
 gw2-cli characters list
 ```
 
-Currently, the API key will not be stored automatically. I therefore created a `.api_key`-file in the `gw2-cli` folder.
-With this file, the application can be executed with the following command: `cargo run -- -a $(cat .api_key) -l en`
+### Character details
+```bash
+gw2-cli characters <character_name> 
+```
 
 # Further ideas / goals
 - Localizing static texts
