@@ -1,7 +1,7 @@
 # gw2-cli
 Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by using the official API.
 
-![Preview](https://repository-images.githubusercontent.com/543321310/0150e47a-df28-4553-af4e-0c889af38a9b)
+![Preview](https://static.p-meier.dev/account.png)
 
 **Note:** This is a learning project I set up to familiarize myself with Rust, since I did not have any prior experience with this tech stack. Feel free to contribute to this project.
 
@@ -27,6 +27,11 @@ gw2-cli characters list
 ```bash
 gw2-cli characters <character_name> 
 ```
+![Preview](https://static.p-meier.dev/character_details.png)
+
+# IDE
+For development I am using [Neovim](https://github.com/neovim/neovim) with the [AstroVim](https://github.com/AstroNvim/AstroNvim) configuration and the provided plugins. Additionally, I installed the `rust-analyzer` and `CodeLLDB` with the following command: `:MasonInstall rust-analyzer codelldb`.
+![Preview](https://static.p-meier.dev/ide.png)
 
 # Further ideas / goals
 - Localizing static texts
