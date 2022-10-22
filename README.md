@@ -29,10 +29,6 @@ gw2-cli characters <character_name>
 ```
 ![Preview](https://static.p-meier.dev/character_details.png)
 
-# IDE
-For development I am using [Neovim](https://github.com/neovim/neovim) with the [AstroVim](https://github.com/AstroNvim/AstroNvim) configuration and the provided plugins. Additionally, I installed the `rust-analyzer` and `CodeLLDB` with the following command: `:MasonInstall rust-analyzer codelldb`.
-![Preview](https://static.p-meier.dev/ide.png)
-
 # Further ideas / goals
 - Localizing static texts
 - Achievement points (APs)
