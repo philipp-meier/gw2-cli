@@ -7,7 +7,7 @@ Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by usi
 
 ## Usage
 ```bash
-Usage: gw2-cli [OPTIONS] [COMMAND]
+Usage: gw2cli [OPTIONS] [COMMAND]
 
 Commands:
   characters  Character information
@@ -20,12 +20,12 @@ Options:
 
 ### List characters
 ```bash
-gw2-cli characters list
+gw2cli characters list
 ```
 
 ### Character details
 ```bash
-gw2-cli characters <character_name> 
+gw2cli characters <character_name> 
 ```
 ![Preview](https://static.p-meier.dev/character_details.png)
 

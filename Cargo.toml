@@ -1,9 +1,9 @@
 [package]
-name = "gw2-cli"
+name = "gw2cli"
 version = "0.1.0"
 authors = ["Philipp Meier"]
 edition = "2021"
-keywords = ["gw2", "api", "stats", "gw2-cli"]
+keywords = ["gw2", "api", "stats", "gw2cli", "gw2-cli"]
 license = "MIT"
 readme = "README.md"
 
