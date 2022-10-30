@@ -24,15 +24,11 @@ impl Gw2Client {
             reqwest::StatusCode::OK => {
                 match response.json::<T>().await {
                     Ok(result) => Ok(result),
-                    Err(_) => Err(Gw2ApiError::new(String::from("The response didn't match the expected shape."))),
+                    Err(_) => Err(Gw2ApiError::new("The response didn't match the expected shape.")),
                 }
             },
-            reqwest::StatusCode::UNAUTHORIZED => {
-                Err(Gw2ApiError::new(String::from("Unauthorized.")))
-            },
-            _ => {
-                Err(Gw2ApiError::new(String::from("Something unexpected happened.")))
-            }
+            reqwest::StatusCode::UNAUTHORIZED => Err(Gw2ApiError::new("Unauthorized.")),
+            _ => Err(Gw2ApiError::new("Something unexpected happened."))
         }
     }
 }
@@ -42,8 +38,8 @@ pub struct Gw2ApiError {
 }
 
 impl Gw2ApiError {
-    pub fn new(msg: String) -> Gw2ApiError {
-        Self { error: msg }
+    pub fn new(msg: &str) -> Gw2ApiError {
+        Self { error: msg.to_string() }
     }
 }
 
