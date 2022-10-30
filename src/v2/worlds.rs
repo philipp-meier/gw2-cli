@@ -11,7 +11,7 @@ pub struct World {
 
 impl World {
     pub async fn get(client: &Gw2Client, world_id: i32) -> Result<World, Gw2ApiError> {
-        match client.request::<Vec<World>>(&format!("v2/worlds?ids={}", world_id)).await {
+        match client.request::<Vec<World>>(&format!("v2/worlds?ids={world_id}")).await {
             Ok(worlds) => Ok(worlds.first().cloned().expect("World could not be resolved.")),
             Err(err) => Err(err)
         }

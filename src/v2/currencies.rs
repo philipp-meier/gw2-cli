@@ -13,7 +13,7 @@ pub struct Currency {
 
 impl Currency {
     pub async fn get(client: &Gw2Client, currency_id: i32) -> Result<Currency, Gw2ApiError> {
-        match client.request::<Vec<Currency>>(&format!("v2/currencies?ids={}", currency_id)).await {
+        match client.request::<Vec<Currency>>(&format!("v2/currencies?ids={currency_id}")).await {
             Ok(currencies) => Ok(currencies.first().cloned().expect("Currency could not be resolved.")),
             Err(err) => Err(err)
         }

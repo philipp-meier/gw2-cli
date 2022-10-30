@@ -34,6 +34,6 @@ pub struct PvpRank {
 impl PvpRank {
     pub async fn get(client: &Gw2Client, player_pvp_rank: i32) -> Result<PvpRank, Gw2ApiError> {
         let mapped_rank = (player_pvp_rank / 10) + 1;
-        client.request(&format!("v2/pvp/ranks/{}", mapped_rank)).await
+        client.request(&format!("v2/pvp/ranks/{mapped_rank}")).await
     }
 }

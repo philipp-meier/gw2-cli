@@ -38,7 +38,7 @@ pub fn format_coins(amount: i32) -> String {
 
 /// Formats the world-vs-world rank and title.
 pub fn format_wvw_stats_row(wvw_rank: i32, title: String) -> String {
-    format!("{} - {}", wvw_rank.to_string().blue(), title)
+    format!("{} - {title}", wvw_rank.to_string().blue())
 }
 
 /// Formats the player-vs-player rank and title.
@@ -82,4 +82,3 @@ pub fn get_ascii_logo_rows() -> Vec<&'static str> {
         " !!7!!!!!YYJJJJJJ??7!~^:        ",
     ]
 }
-

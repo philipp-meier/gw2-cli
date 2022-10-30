@@ -15,10 +15,7 @@ pub struct StatsRow {
 
 impl StatsRow {
     pub fn new(title: &str, text: String) -> StatsRow {
-        Self {
-            title: String::from(title),
-            text,
-        }
+        Self { title: String::from(title), text }
     }
 }
 
@@ -129,4 +126,3 @@ pub fn print_stats(stats_rows: Vec<StatsRow>) {
         }
     }
 }
-

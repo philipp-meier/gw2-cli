@@ -31,7 +31,7 @@ impl Gw2Client {
                 Err(Gw2ApiError::new(String::from("Unauthorized.")))
             },
             _ => {
-                panic!("Something unexpected happened.");
+                Err(Gw2ApiError::new(String::from("Something unexpected happened.")))
             }
         }
     }
