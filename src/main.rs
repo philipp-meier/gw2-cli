@@ -1,22 +1,11 @@
+mod common;
+mod v2;
+
 use clap::{Parser, Subcommand};
 use common::client;
-use std::env;
 use v2::account::Account;
 use v2::worlds::World;
-
-mod common {
-    pub mod client;
-    pub mod stats;
-    pub mod utils;
-}
-
-mod v2 {
-    pub mod account;
-    pub mod characters;
-    pub mod pvp;
-    pub mod worlds;
-    pub mod wvw;
-}
+use std::env;
 
 #[derive(Parser, Debug)]
 struct Cli {
