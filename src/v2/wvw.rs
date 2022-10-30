@@ -1,5 +1,5 @@
 // /v2/wvw[/*]
-use crate::client::{Gw2ApiError, Gw2Client};
+use crate::common::client::{Gw2ApiError, Gw2Client};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]

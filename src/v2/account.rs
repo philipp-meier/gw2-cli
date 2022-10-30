@@ -1,5 +1,5 @@
 // /v2/account[/*]
-use crate::client::{Gw2ApiError, Gw2Client};
+use crate::common::client::{Gw2Client,Gw2ApiError};
 use serde::{Deserialize, Serialize};
 use chrono::prelude::*;
 

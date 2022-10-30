@@ -1,11 +1,11 @@
-use crate::client::Gw2Client;
+use crate::common::client::{Gw2Client,Gw2ApiError};
 use crate::common::utils::*;
 use crate::v2::account::Wallet;
-use crate::v2::characters::CharacterCore;
 use crate::v2::pvp::{PvpRank, PvpStats};
 use crate::v2::wvw::WvwRank;
-use crate::Account;
-use crate::World;
+use crate::v2::account::Account;
+use crate::v2::worlds::World;
+use crate::v2::characters;
 use colored::Colorize;
 
 pub struct StatsRow {
@@ -22,7 +22,7 @@ impl StatsRow {
     }
 }
 
-pub async fn print(client: &Gw2Client) {
+pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError>{
     let mut rows = Vec::<StatsRow>::new();
 
     match Account::get(&client).await {
@@ -84,17 +84,19 @@ pub async fn print(client: &Gw2Client) {
             }
 
             // Oldest character stats
-            match CharacterCore::get_oldest_character(&client).await {
+            match characters::get_oldest_character(&client).await {
                 Ok(oldest_char) => {
                     rows.push(StatsRow::new("Oldest char", format_char_row(oldest_char)))
                 }
                 Err(err) => rows.push(StatsRow::new("Oldest char", err.error)),
             }
         }
-        Err(err) => println!("{}", err.error),
+        Err(err) => return Err(err),
     };
 
     print_stats(rows);
+
+    Ok(())
 }
 
 pub fn print_stats(stats_rows: Vec<StatsRow>) {
