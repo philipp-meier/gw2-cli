@@ -1,5 +1,7 @@
 # gw2-cli
-[![Build](https://github.com/philipp-meier/gw2-cli/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/philipp-meier/gw2-cli/actions/workflows/rust.yml)  
+[![Build](https://github.com/philipp-meier/gw2-cli/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/philipp-meier/gw2-cli/actions/workflows/rust.yml)
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/mockito/mockito/blob/main/LICENSE)
+  
 Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by using the official API.
 
 ![Preview](https://static.p-meier.dev/account.png)
