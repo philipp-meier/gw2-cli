@@ -3,6 +3,7 @@ use crate::common::client::{Gw2ApiError, Gw2Client};
 use crate::common::stats::{print_stats, StatsRow};
 use crate::common::utils::get_age_from_create_date;
 use chrono::prelude::*;
+use futures::*;
 use serde::{Deserialize, Serialize};
 use urlencoding::encode;
 
@@ -33,7 +34,9 @@ impl CharacterCore {
     }
 
     pub async fn get(client: &Gw2Client, char_name: &str) -> Result<CharacterCore, Gw2ApiError> {
-        client.request(&format!("v2/characters/{}/core", encode(&char_name))).await
+        client
+            .request(&format!("v2/characters/{}/core", encode(&char_name)))
+            .await
     }
 
     pub async fn get_char_names(client: &Gw2Client) -> Result<Vec<String>, Gw2ApiError> {
@@ -44,7 +47,7 @@ impl CharacterCore {
 pub async fn handle_command(client: &Gw2Client, command: &str) -> Result<(), Gw2ApiError> {
     match command {
         "list" => print_characters(&client).await,
-        _ => print_character_stats(&client, command).await
+        _ => print_character_stats(&client, command).await,
     }
 }
 
@@ -85,21 +88,25 @@ pub async fn print_character_stats(client: &Gw2Client, name: &str) -> Result<(),
     Ok(())
 }
 
+const CONCURRENT_REQUEST: usize = 20;
 pub async fn get_oldest_character(client: &Gw2Client) -> Result<CharacterCore, Gw2ApiError> {
     let mut oldest_character: CharacterCore = CharacterCore::new();
 
     match CharacterCore::get_char_names(&client).await {
         Ok(char_names) => {
-            for char_name in char_names {
-                match CharacterCore::get(&client, &char_name).await {
-                    Ok(character) => {
-                        if character.age >= oldest_character.age {
-                            oldest_character = character;
-                        }
+            let results = stream::iter(char_names)
+                .map(|char_name| async move { CharacterCore::get(&client, &char_name).await })
+                .buffer_unordered(CONCURRENT_REQUEST);
+
+            results
+                .for_each(|result| {
+                    let character = result.unwrap();
+                    if character.age > oldest_character.age {
+                        oldest_character = character;
                     }
-                    Err(_) => break,
-                }
-            }
+                    async { () }
+                })
+                .await;
 
             Ok(oldest_character)
         }
