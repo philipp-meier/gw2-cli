@@ -1,5 +1,5 @@
-use std::process;
 use gw2cli::Config;
+use std::process;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,3 +15,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+

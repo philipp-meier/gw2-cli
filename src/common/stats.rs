@@ -1,11 +1,11 @@
-use crate::common::client::{Gw2Client,Gw2ApiError};
+use crate::common::client::{Gw2ApiError, Gw2Client};
 use crate::common::utils::*;
-use crate::v2::account::Wallet;
-use crate::v2::pvp::{PvpRank, PvpStats};
-use crate::v2::wvw::WvwRank;
 use crate::v2::account::Account;
-use crate::v2::worlds::World;
+use crate::v2::account::Wallet;
 use crate::v2::characters;
+use crate::v2::pvp::{PvpRank, PvpStats};
+use crate::v2::worlds::World;
+use crate::v2::wvw::WvwRank;
 use colored::Colorize;
 
 pub struct StatsRow {
@@ -15,11 +15,14 @@ pub struct StatsRow {
 
 impl StatsRow {
     pub fn new(title: &str, text: String) -> StatsRow {
-        Self { title: String::from(title), text }
+        Self {
+            title: String::from(title),
+            text,
+        }
     }
 }
 
-pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError>{
+pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
     let mut rows = Vec::<StatsRow>::new();
 
     match Account::get(&client).await {
@@ -126,3 +129,4 @@ pub fn print_stats(stats_rows: Vec<StatsRow>) {
         }
     }
 }
+

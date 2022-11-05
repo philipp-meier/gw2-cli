@@ -61,4 +61,3 @@ impl From<reqwest::Error> for Gw2ApiError {
         }
     }
 }
-

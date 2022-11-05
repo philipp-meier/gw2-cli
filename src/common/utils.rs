@@ -5,7 +5,11 @@ use colored::Colorize;
 
 /// Returns the formatted age (years, days, hours, minutes, seconds).
 pub fn get_age_from_create_date(timestamp: DateTime<Utc>) -> String {
-    let mut seconds = (Utc::now() - timestamp).num_seconds() as usize;
+    let seconds = (Utc::now() - timestamp).num_seconds() as usize;
+    get_age_from_seconds(seconds.try_into().unwrap())
+}
+pub fn get_age_from_seconds(seconds: i64) -> String {
+    let mut seconds = seconds;
 
     let years = seconds / 31_536_000;
     seconds = seconds - (years * 31_536_000);
@@ -82,3 +86,4 @@ pub fn get_ascii_logo_rows() -> Vec<&'static str> {
         " !!7!!!!!YYJJJJJJ??7!~^:        ",
     ]
 }
+

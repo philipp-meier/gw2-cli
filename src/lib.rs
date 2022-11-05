@@ -32,11 +32,17 @@ impl Config {
     pub fn build() -> Result<Config, &'static str> {
         let api_key = match env::var(ENV_API_KEY_NAME) {
             Ok(val) => val,
-            Err(_e) => return Err("Environment variable \"{API_KEY_ENV_VAR_NAME}\" is not defined.")
+            Err(_e) => {
+                return Err("Environment variable \"{API_KEY_ENV_VAR_NAME}\" is not defined.")
+            }
         };
 
-        let cli : Cli = Cli::parse();
-        Ok(Config { lang: cli.lang, command: cli.command, api_key })
+        let cli: Cli = Cli::parse();
+        Ok(Config {
+            lang: cli.lang,
+            command: cli.command,
+            api_key,
+        })
     }
 }
 
@@ -44,8 +50,9 @@ pub async fn run(config: Config) -> Result<(), Gw2ApiError> {
     let client = Gw2Client::new(config.api_key, config.lang);
     match config.command {
         Some(command) => match command {
-            Commands::Characters { command } => characters::handle_command(&client, &command).await
+            Commands::Characters { command } => characters::handle_command(&client, &command).await,
         },
         None => common::stats::print(&client).await,
     }
 }
+
