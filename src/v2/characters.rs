@@ -101,7 +101,7 @@ pub async fn get_oldest_character(client: &Gw2Client) -> Result<CharacterCore, G
             results
                 .for_each(|result| {
                     let character = result.unwrap();
-                    if character.age > oldest_character.age {
+                    if oldest_character.age <= 0 || character.created < oldest_character.created {
                         oldest_character = character;
                     }
                     async { () }
