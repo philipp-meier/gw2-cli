@@ -1,7 +1,7 @@
 // /v2/characters[/*]
 use crate::common::client::{Gw2ApiError, Gw2Client};
 use crate::common::stats::{print_stats, StatsRow};
-use crate::common::utils::get_age_from_create_date;
+use crate::common::utils::{get_age_from_create_date, get_age_from_seconds};
 use chrono::prelude::*;
 use futures::*;
 use serde::{Deserialize, Serialize};
@@ -72,14 +72,18 @@ pub async fn print_character_stats(client: &Gw2Client, name: &str) -> Result<(),
                 "Separator",
                 String::from("-----------------------"),
             ));
+            rows.push(StatsRow::new(
+                "Age",
+                get_age_from_create_date(character.created),
+            ));
             rows.push(StatsRow::new("Race", character.race));
             rows.push(StatsRow::new("Gender", character.gender));
             rows.push(StatsRow::new("Profession", character.profession));
             rows.push(StatsRow::new("Level", character.level.to_string()));
             rows.push(StatsRow::new("Deaths", character.deaths.to_string()));
             rows.push(StatsRow::new(
-                "Age",
-                get_age_from_create_date(character.created),
+                "Playtime",
+                get_age_from_seconds(character.age.into()),
             ));
             print_stats(rows);
         }
