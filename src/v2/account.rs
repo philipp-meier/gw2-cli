@@ -37,4 +37,3 @@ impl Wallet {
         client.request("v2/account/wallet").await
     }
 }
-
