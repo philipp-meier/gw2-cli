@@ -8,10 +8,10 @@ pub struct Gw2Client {
 }
 
 impl Gw2Client {
-    pub fn new(api_key: String, lang: String) -> Gw2Client {
+    pub fn new(api_key: &str, lang: &str) -> Self {
         Self {
-            api_key,
-            lang,
+            api_key: api_key.to_owned(),
+            lang: lang.to_owned(),
             req_client: reqwest::Client::new(),
         }
     }
@@ -47,9 +47,9 @@ pub struct Gw2ApiError {
 }
 
 impl Gw2ApiError {
-    pub fn new(msg: &str) -> Gw2ApiError {
+    pub fn new(msg: &str) -> Self {
         Self {
-            error: msg.to_string(),
+            error: msg.to_owned(),
         }
     }
 }

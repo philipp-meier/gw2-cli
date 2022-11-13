@@ -37,4 +37,3 @@ impl PvpRank {
         client.request(&format!("v2/pvp/ranks/{mapped_rank}")).await
     }
 }
-

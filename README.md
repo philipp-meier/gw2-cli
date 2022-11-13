@@ -32,6 +32,18 @@ gw2cli characters <character_name>
 ```
 ![Preview](https://static.p-meier.dev/character_details.png)
 
+# Development
+## Performance tests
+
+```bash
+# sudo apt install linux-tools-generic
+
+# Stats
+perf stat -r 10 ./target/release/gw2cli
+# List characters
+perf stat -r 10 ./target/release/gw2cli characters list
+```
+
 # Further ideas / goals
 - Localizing static texts
 - Achievement points (APs)
@@ -39,7 +51,6 @@ gw2cli characters <character_name>
 - In-game currency to collect on the TP
 - Number of unlocked character slots
 - Available content (PoF, HoT,..)
-- Storing the API-key and offering a "login" command
 - Different views (PvP, WvW, Rewards...) using `clap` arguments
 - Character with the most playtime (incl. profession and specialization)
 - Different ascii logos based on the main character or other statistics

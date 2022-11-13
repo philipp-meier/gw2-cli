@@ -20,12 +20,12 @@ pub struct CharacterCore {
 }
 
 impl CharacterCore {
-    pub fn new() -> CharacterCore {
+    pub fn new() -> Self {
         Self {
-            name: "".to_string(),
-            race: "".to_string(),
-            gender: "".to_string(),
-            profession: "".to_string(),
+            name: String::new(),
+            race: String::new(),
+            gender: String::new(),
+            profession: String::new(),
             level: 0,
             age: 0,
             deaths: 0,
@@ -67,23 +67,20 @@ pub async fn print_character_stats(client: &Gw2Client, name: &str) -> Result<(),
     match CharacterCore::get(client, name).await {
         Ok(character) => {
             let mut rows = Vec::<StatsRow>::new();
-            rows.push(StatsRow::new("Title", character.name));
-            rows.push(StatsRow::new(
-                "Separator",
-                String::from("-----------------------"),
-            ));
+            rows.push(StatsRow::new("Title", &character.name));
+            rows.push(StatsRow::new("Separator", "-----------------------"));
             rows.push(StatsRow::new(
                 "Age",
-                get_age_from_create_date(character.created),
+                &get_age_from_create_date(character.created),
             ));
-            rows.push(StatsRow::new("Race", character.race));
-            rows.push(StatsRow::new("Gender", character.gender));
-            rows.push(StatsRow::new("Profession", character.profession));
-            rows.push(StatsRow::new("Level", character.level.to_string()));
-            rows.push(StatsRow::new("Deaths", character.deaths.to_string()));
+            rows.push(StatsRow::new("Race", &character.race));
+            rows.push(StatsRow::new("Gender", &character.gender));
+            rows.push(StatsRow::new("Profession", &character.profession));
+            rows.push(StatsRow::new("Level", &character.level.to_string()));
+            rows.push(StatsRow::new("Deaths", &character.deaths.to_string()));
             rows.push(StatsRow::new(
                 "Playtime",
-                get_age_from_seconds(character.age.into()),
+                &get_age_from_seconds(character.age.into()),
             ));
             print_stats(rows);
         }

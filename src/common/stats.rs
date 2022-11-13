@@ -14,10 +14,10 @@ pub struct StatsRow {
 }
 
 impl StatsRow {
-    pub fn new(title: &str, text: String) -> StatsRow {
+    pub fn new(title: &str, text: &str) -> Self {
         Self {
-            title: String::from(title),
-            text,
+            title: title.to_owned(),
+            text: text.to_owned(),
         }
     }
 }
@@ -27,25 +27,22 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
 
     match Account::get(&client).await {
         Ok(account) => {
-            rows.push(StatsRow::new("Title", account.name));
-            rows.push(StatsRow::new(
-                "Separator",
-                String::from("-----------------------"),
-            ));
+            rows.push(StatsRow::new("Title", &account.name));
+            rows.push(StatsRow::new("Separator", "-----------------------"));
             rows.push(StatsRow::new(
                 "Account Age",
-                get_age_from_create_date(account.created),
+                &get_age_from_create_date(account.created),
             ));
 
             // Account create date
-            rows.push(StatsRow::new("Created", account.created.to_string()));
+            rows.push(StatsRow::new("Created", &account.created.to_string()));
 
             // (Home-)World of the player
             let world_row = match World::get(&client, account.world).await {
                 Ok(world) => {
-                    StatsRow::new("World", format!("{} ({})", world.name, world.population))
+                    StatsRow::new("World", &format!("{} ({})", world.name, world.population))
                 }
-                Err(_) => StatsRow::new("World", account.world.to_string()),
+                Err(_) => StatsRow::new("World", &account.world.to_string()),
             };
             rows.push(world_row);
 
@@ -54,12 +51,12 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
                 Ok(wallets) => {
                     for wallet in wallets {
                         if wallet.id == 1 {
-                            rows.push(StatsRow::new("Coins", format_coins(wallet.value)));
+                            rows.push(StatsRow::new("Coins", &format_coins(wallet.value)));
                             break;
                         }
                     }
                 }
-                Err(_) => rows.push(StatsRow::new("Coins", String::from("not found"))),
+                Err(_) => rows.push(StatsRow::new("Coins", "not found")),
             }
 
             // PvP stats
@@ -69,26 +66,26 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
                         Ok(rank) => rank.name,
                         Err(err) => String::from(err.error),
                     };
-                    rows.push(StatsRow::new("PvP", format_pvp_stats_row(stats, rank)));
+                    rows.push(StatsRow::new("PvP", &format_pvp_stats_row(stats, rank)));
                 }
-                Err(_) => rows.push(StatsRow::new("PvP", String::from("not found"))),
+                Err(_) => rows.push(StatsRow::new("PvP", "not found")),
             }
 
             // WvW stats
             match WvwRank::get(&client, account.wvw_rank).await {
                 Ok(rank) => rows.push(StatsRow::new(
                     "WvW",
-                    format_wvw_stats_row(account.wvw_rank, rank.title),
+                    &format_wvw_stats_row(account.wvw_rank, rank.title),
                 )),
-                Err(err) => rows.push(StatsRow::new("WvW", err.error)),
+                Err(err) => rows.push(StatsRow::new("WvW", &err.error)),
             }
 
             // Oldest character stats
             match characters::get_oldest_character(&client).await {
                 Ok(oldest_char) => {
-                    rows.push(StatsRow::new("Oldest char", format_char_row(oldest_char)))
+                    rows.push(StatsRow::new("Oldest char", &format_char_row(oldest_char)))
                 }
-                Err(err) => rows.push(StatsRow::new("Oldest char", err.error)),
+                Err(err) => rows.push(StatsRow::new("Oldest char", &err.error)),
             }
         }
         Err(err) => return Err(err),
@@ -102,6 +99,7 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
 pub fn print_stats(stats_rows: Vec<StatsRow>) {
     let ascii_logo_rows = get_ascii_logo_rows();
     let stats_rows_length = stats_rows.len();
+
     for (i, ascii_line) in ascii_logo_rows.iter().enumerate() {
         let formatted_ascii_line = ascii_line.red().bold();
 
@@ -129,4 +127,3 @@ pub fn print_stats(stats_rows: Vec<StatsRow>) {
         }
     }
 }
-

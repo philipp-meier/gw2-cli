@@ -86,4 +86,3 @@ pub fn get_ascii_logo_rows() -> Vec<&'static str> {
         " !!7!!!!!YYJJJJJJ??7!~^:        ",
     ]
 }
-
