@@ -4,7 +4,7 @@
   
 Simple, neofetch-like command line tool for displaying Guild Wars 2 stats by using the official API.
 
-![Preview](https://static.p-meier.dev/account.png)
+![Preview](https://static.p-meier.dev/gw2cli_account.png)
 
 **Note:** This is a learning project I set up to familiarize myself with Rust, since I did not have any prior experience with this tech stack. Feel free to contribute to this project.
 
@@ -30,7 +30,7 @@ gw2cli characters list
 ```bash
 gw2cli characters <character_name> 
 ```
-![Preview](https://static.p-meier.dev/character_details.png)
+![Preview](https://static.p-meier.dev/gw2cli_characters.png)
 
 # Development
 ## Performance tests
