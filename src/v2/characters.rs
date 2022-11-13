@@ -19,8 +19,8 @@ pub struct CharacterCore {
     pub created: DateTime<Utc>, // ISO 8601 representation of the character's creation time
 }
 
-impl CharacterCore {
-    pub fn new() -> Self {
+impl Default for CharacterCore {
+    fn default() -> Self {
         Self {
             name: String::new(),
             race: String::new(),
@@ -32,7 +32,9 @@ impl CharacterCore {
             created: Default::default(),
         }
     }
+}
 
+impl CharacterCore {
     pub async fn get(client: &Gw2Client, char_name: &str) -> Result<CharacterCore, Gw2ApiError> {
         client
             .request(&format!("v2/characters/{}/core", encode(&char_name)))
@@ -91,7 +93,7 @@ pub async fn print_character_stats(client: &Gw2Client, name: &str) -> Result<(),
 
 const CONCURRENT_REQUEST: usize = 20;
 pub async fn get_oldest_character(client: &Gw2Client) -> Result<CharacterCore, Gw2ApiError> {
-    let mut oldest_character: CharacterCore = CharacterCore::new();
+    let mut oldest_character: CharacterCore = CharacterCore::default();
 
     match CharacterCore::get_char_names(&client).await {
         Ok(char_names) => {

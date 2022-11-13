@@ -9,17 +9,19 @@ pub struct WvwRank {
     pub min_rank: i32, // Minimum WvW level required to be this rank
 }
 
-impl WvwRank {
-    pub fn new() -> Self {
+impl Default for WvwRank {
+    fn default() -> Self {
         Self {
             id: 0,
-            title: String::from("not found"),
             min_rank: 0,
+            title: String::new(),
         }
     }
+}
 
+impl WvwRank {
     pub async fn get(client: &Gw2Client, player_wvw_level: i32) -> Result<WvwRank, Gw2ApiError> {
-        let mut player_rank = WvwRank::new();
+        let mut player_rank = WvwRank::default();
 
         // Unfortunately, there is no other way to get the WvW rank at the moment.
         match client.request::<Vec<i32>>("v2/wvw/ranks").await {
