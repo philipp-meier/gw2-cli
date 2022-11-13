@@ -8,7 +8,7 @@ pub struct Gw2Client {
 }
 
 impl Gw2Client {
-    pub fn new(api_key: String, lang: String) -> Gw2Client {
+    pub fn new(api_key: String, lang: String) -> Self {
         Self {
             api_key,
             lang,
@@ -47,7 +47,7 @@ pub struct Gw2ApiError {
 }
 
 impl Gw2ApiError {
-    pub fn new(msg: &str) -> Gw2ApiError {
+    pub fn new(msg: &str) -> Self {
         Self {
             error: msg.to_string(),
         }

@@ -10,7 +10,7 @@ pub struct WvwRank {
 }
 
 impl WvwRank {
-    pub fn new() -> WvwRank {
+    pub fn new() -> Self {
         Self {
             id: 0,
             title: String::from("not found"),
@@ -45,4 +45,3 @@ impl WvwRank {
         }
     }
 }
-

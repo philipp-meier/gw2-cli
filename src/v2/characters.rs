@@ -20,7 +20,7 @@ pub struct CharacterCore {
 }
 
 impl CharacterCore {
-    pub fn new() -> CharacterCore {
+    pub fn new() -> Self {
         Self {
             name: "".to_string(),
             race: "".to_string(),
