@@ -2,21 +2,11 @@
 use crate::common::client::{Gw2ApiError, Gw2Client};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug)]
 pub struct WvwRank {
     pub id: i32,       // Unique WvW rank ID
     pub title: String, // Title of the WvW rank
     pub min_rank: i32, // Minimum WvW level required to be this rank
-}
-
-impl Default for WvwRank {
-    fn default() -> Self {
-        Self {
-            id: 0,
-            min_rank: 0,
-            title: String::new(),
-        }
-    }
 }
 
 impl WvwRank {

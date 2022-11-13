@@ -23,31 +23,30 @@ impl StatsRow {
 }
 
 pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
-    let mut rows = Vec::<StatsRow>::new();
+    let mut rows;
 
-    match Account::get(&client).await {
+    match Account::get(client).await {
         Ok(account) => {
-            rows.push(StatsRow::new("Title", &account.name));
-            rows.push(StatsRow::new("Separator", "-----------------------"));
-            rows.push(StatsRow::new(
-                "Account Age",
-                &get_age_from_create_date(account.created),
-            ));
-
-            // Account create date
-            rows.push(StatsRow::new("Created", &account.created.to_string()));
+            rows = vec![
+                StatsRow::new("Title", &account.name),
+                StatsRow::new("Separator", "-----------------------"),
+                StatsRow::new("Account Age", &get_age_from_create_date(account.created)),
+                StatsRow::new("Created", &account.created.to_string()),
+            ];
 
             // (Home-)World of the player
-            let world_row = match World::get(&client, account.world).await {
+            match World::get(client, account.world).await {
                 Ok(world) => {
-                    StatsRow::new("World", &format!("{} ({})", world.name, world.population))
+                    rows.push(StatsRow::new(
+                        "World",
+                        &format!("{} ({})", world.name, world.population),
+                    ));
                 }
-                Err(_) => StatsRow::new("World", &account.world.to_string()),
+                Err(_) => rows.push(StatsRow::new("World", &account.world.to_string())),
             };
-            rows.push(world_row);
 
             // In-game currency (Gold, Silver, Copper)
-            match Wallet::get(&client).await {
+            match Wallet::get(client).await {
                 Ok(wallets) => {
                     for wallet in wallets {
                         if wallet.id == 1 {
@@ -60,11 +59,11 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
             }
 
             // PvP stats
-            match PvpStats::get(&client).await {
+            match PvpStats::get(client).await {
                 Ok(stats) => {
-                    let rank = match PvpRank::get(&client, stats.pvp_rank).await {
+                    let rank = match PvpRank::get(client, stats.pvp_rank).await {
                         Ok(rank) => rank.name,
-                        Err(err) => String::from(err.error),
+                        Err(err) => err.error,
                     };
                     rows.push(StatsRow::new("PvP", &format_pvp_stats_row(stats, rank)));
                 }
@@ -72,7 +71,7 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
             }
 
             // WvW stats
-            match WvwRank::get(&client, account.wvw_rank).await {
+            match WvwRank::get(client, account.wvw_rank).await {
                 Ok(rank) => rows.push(StatsRow::new(
                     "WvW",
                     &format_wvw_stats_row(account.wvw_rank, rank.title),
@@ -81,7 +80,7 @@ pub async fn print(client: &Gw2Client) -> Result<(), Gw2ApiError> {
             }
 
             // Oldest character stats
-            match characters::get_oldest_character(&client).await {
+            match characters::get_oldest_character(client).await {
                 Ok(oldest_char) => {
                     rows.push(StatsRow::new("Oldest char", &format_char_row(oldest_char)))
                 }

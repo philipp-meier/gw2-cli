@@ -6,7 +6,7 @@ use crate::v2::characters;
 use clap::{Parser, Subcommand};
 use std::env;
 
-const ENV_API_KEY_NAME: &'static str = "Gw2Cli_ApiKey";
+const ENV_API_KEY_NAME: &str = "Gw2Cli_ApiKey";
 
 #[derive(Parser, Debug)]
 struct Cli {
