@@ -2,7 +2,7 @@
 use crate::common::client::{Gw2ApiError, Gw2Client};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug)]
 pub struct WvwRank {
     pub id: i32,       // Unique WvW rank ID
     pub title: String, // Title of the WvW rank
@@ -10,16 +10,8 @@ pub struct WvwRank {
 }
 
 impl WvwRank {
-    pub fn new() -> Self {
-        Self {
-            id: 0,
-            title: String::from("not found"),
-            min_rank: 0,
-        }
-    }
-
     pub async fn get(client: &Gw2Client, player_wvw_level: i32) -> Result<WvwRank, Gw2ApiError> {
-        let mut player_rank = WvwRank::new();
+        let mut player_rank = WvwRank::default();
 
         // Unfortunately, there is no other way to get the WvW rank at the moment.
         match client.request::<Vec<i32>>("v2/wvw/ranks").await {

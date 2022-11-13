@@ -12,16 +12,16 @@ pub fn get_age_from_seconds(seconds: i64) -> String {
     let mut seconds = seconds;
 
     let years = seconds / 31_536_000;
-    seconds = seconds - (years * 31_536_000);
+    seconds -= years * 31_536_000;
 
     let days = seconds / 86_400;
-    seconds = seconds - (days * 86_400);
+    seconds -= days * 86_400;
 
     let hours = seconds / 3_600;
-    seconds = seconds - (hours * 3_600);
+    seconds -= hours * 3_600;
 
     let minutes = seconds / 60;
-    seconds = seconds - (minutes * 60);
+    seconds -= minutes * 60;
 
     format!("{years}y {days}d {hours}h {minutes}m {seconds}s")
 }

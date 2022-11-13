@@ -44,6 +44,11 @@ perf stat -r 10 ./target/release/gw2cli
 perf stat -r 10 ./target/release/gw2cli characters list
 ```
 
+## Linter
+```bash
+cargo clippy
+```
+
 # Further ideas / goals
 - Localizing static texts
 - Achievement points (APs)
