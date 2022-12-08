@@ -1,4 +1,4 @@
-use reqwest::header::{ACCEPT_LANGUAGE, AUTHORIZATION};
+use reqwest::header::ACCEPT_LANGUAGE;
 use serde::de::DeserializeOwned;
 
 pub struct Gw2Client {
@@ -23,7 +23,7 @@ impl Gw2Client {
         let response = self
             .req_client
             .get(format!("https://api.guildwars2.com/{endpoint}"))
-            .header(AUTHORIZATION, format!("Bearer {}", self.api_key))
+            .bearer_auth(&self.api_key)
             .header(ACCEPT_LANGUAGE, self.lang.to_string())
             .send()
             .await?;
