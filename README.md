@@ -9,7 +9,7 @@ Simple neofetch-like command line tool for displaying Guild Wars 2 stats by usin
 **Note:** This is a learning project I set up to familiarize myself with Rust, since I did not have any prior experience with this tech stack. Feel free to contribute to this project.
 
 ## Usage
-Set your GW2 API-key to a environment variable named `Gw2Cli_ApiKey`. After that, gw2-cli can be used as described below:  
+Set your GW2 API-key to an environment variable named `Gw2Cli_ApiKey`. After that, gw2-cli can be used as described below:  
 ```bash
 Usage: gw2cli [OPTIONS] [COMMAND]
 
