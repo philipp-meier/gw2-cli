@@ -27,6 +27,12 @@ Options:
 gw2cli characters list
 ```
 
+### List characters with age (oldest first)
+```bash
+gw2cli characters list age
+```
+This prints each character along with their formatted age (same format as in `characters <name>`), ordered from oldest to youngest.
+
 ### Character details
 ```bash
 gw2cli characters <character_name> 

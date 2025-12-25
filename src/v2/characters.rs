@@ -31,9 +31,16 @@ impl CharacterCore {
     }
 }
 
-pub async fn handle_command(client: &Gw2Client, command: &str) -> Result<(), Gw2ApiError> {
+pub async fn handle_command(
+    client: &Gw2Client,
+    command: &str,
+    details: Option<&str>,
+) -> Result<(), Gw2ApiError> {
     match command {
-        "list" => print_characters(client).await,
+        "list" => match details {
+            Some("age") => print_characters_with_age(client).await,
+            _ => print_characters(client).await,
+        },
         _ => print_character_stats(client, command).await,
     }
 }
@@ -68,6 +75,31 @@ pub async fn print_character_stats(client: &Gw2Client, name: &str) -> Result<(),
         }
         Err(err) => return Err(err),
     }
+    Ok(())
+}
+
+pub async fn print_characters_with_age(client: &Gw2Client) -> Result<(), Gw2ApiError> {
+    let names = CharacterCore::get_char_names(client).await?;
+
+    // Fetch all character cores in parallel
+    let futures = names.iter().map(|n| CharacterCore::get(client, n));
+    let results = futures::future::join_all(futures).await;
+
+    // Pair names with their creation dates, failing fast on any error
+    let mut items: Vec<(String, DateTime<Utc>)> = Vec::with_capacity(names.len());
+    for (name, res) in names.into_iter().zip(results.into_iter()) {
+        let character = res?;
+        items.push((name, character.created));
+    }
+
+    // Oldest first -> sort by creation date ascending; tie-breaker by name
+    items.sort_by(|a, b| (a.1, a.0.as_str()).cmp(&(b.1, b.0.as_str())));
+
+    for (name, created) in items.into_iter() {
+        let age = get_age_from_create_date(created);
+        println!("{} - {}", name, age);
+    }
+
     Ok(())
 }
 

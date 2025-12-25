@@ -19,7 +19,12 @@ struct Cli {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Character information
-    Characters { command: String },
+    Characters {
+        /// Primary command: either a character name or 'list'
+        command: String,
+        /// Optional details for the command, e.g. 'age' for 'list age'
+        details: Option<String>,
+    },
 }
 
 pub struct Config {
@@ -52,7 +57,9 @@ pub async fn run(config: Config) -> Result<(), Gw2ApiError> {
     let client = Gw2Client::new(&config.api_key, &config.lang);
     match config.command {
         Some(command) => match command {
-            Commands::Characters { command } => characters::handle_command(&client, &command).await,
+            Commands::Characters { command, details } => {
+                characters::handle_command(&client, &command, details.as_deref()).await
+            }
         },
         None => common::stats::print(&client).await,
     }
